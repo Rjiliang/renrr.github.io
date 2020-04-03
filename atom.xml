@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://renrr.github.io/"/>
   <updated>2020-04-03T01:13:09.493Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://renrr.github.io/</id>
   
   <author>
     <name>John Doe</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2020/04/03/hello-world/"/>
-    <id>http://yoursite.com/2020/04/03/hello-world/</id>
+    <link href="https://renrr.github.io/2020/04/03/hello-world/"/>
+    <id>https://renrr.github.io/2020/04/03/hello-world/</id>
     <published>2020-04-03T01:13:09.493Z</published>
     <updated>2020-04-03T01:13:09.493Z</updated>
     
