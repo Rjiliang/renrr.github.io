@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Lucene 介绍 | renrr Blog</title>
+  <meta name="description" content="lucene介绍背景生活中的数据总体分为两种类型  结构化数据：指具有固定格式或有限长度的数据（数据库表中的数据） 非结构化数据：指不定长或无固定格式的数据 （如邮件，word文档等磁盘上的文件）  结构化数据的查询方法：  sql语句  非结构化数据的查询方法：  顺序扫描法(Serial Scanning)：顺序扫描所有文件，速度慢 全文检索(Full-text Search)：非结构化数据中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lucene 介绍">
+<meta property="og:url" content="https://renrr.github.io/post/414a752e.html">
+<meta property="og:site_name" content="renrr&#39;s Blog">
+<meta property="og:description" content="lucene介绍背景生活中的数据总体分为两种类型  结构化数据：指具有固定格式或有限长度的数据（数据库表中的数据） 非结构化数据：指不定长或无固定格式的数据 （如邮件，word文档等磁盘上的文件）  结构化数据的查询方法：  sql语句  非结构化数据的查询方法：  顺序扫描法(Serial Scanning)：顺序扫描所有文件，速度慢 全文检索(Full-text Search)：非结构化数据中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renrr.github.io/assets/image/lucene.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/lucene2.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/lucene3.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/lucene4.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/luke.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/luke1.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/luke2.png">
+<meta property="og:image" content="https://renrr.github.io/assets/image/luke3.png">
+<meta property="article:published_time" content="2020-04-10T12:35:45.000Z">
+<meta property="article:modified_time" content="2020-04-12T03:08:50.376Z">
+<meta property="article:author" content="renrr">
+<meta property="article:tag" content="lucene">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renrr.github.io/assets/image/lucene.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://renrr.github.io/post/414a752e.html">
+  
+  
+    <link rel="icon" href="/images/logo.jpeg" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+<meta name="generator" content="Hexo 4.2.0"><link rel="alternate" href="/atom.xml" title="renrr's Blog" type="application/atom+xml">
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/renrr" target="_blank">
+          <img class="img-circle img-rotate" src="/images/logo.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">renrr</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Java Developer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Xi`An, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/renrr" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/RPC/">RPC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/bigdata/">bigdata</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/IDL/" style="font-size: 13px;">IDL</a> <a href="/tags/lucene/" style="font-size: 13px;">lucene</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/RPC/">RPC</a>
+              </p>
+              <p class="item-title">
+                <a href="/post/8c005afd.html" class="title">Apache Thrift</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-11T13:35:45.000Z" itemprop="datePublished">2020-04-11</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/bigdata/">bigdata</a>
+              </p>
+              <p class="item-title">
+                <a href="/post/414a752e.html" class="title">Lucene 介绍</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-04-10T12:35:45.000Z" itemprop="datePublished">2020-04-10</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#lucene介绍"><span class="toc-number">1.</span> <span class="toc-text">lucene介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#全文检索的一般过程"><span class="toc-number">1.2.</span> <span class="toc-text">全文检索的一般过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本概念"><span class="toc-number">1.3.</span> <span class="toc-text">基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引流程"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建索引流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询索引"><span class="toc-number">1.3.2.</span> <span class="toc-text">查询索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#luke使用"><span class="toc-number">1.4.</span> <span class="toc-text">luke使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看文档内容"><span class="toc-number">1.5.</span> <span class="toc-text">查看文档内容</span></a></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-lucene" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Lucene 介绍
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/post/414a752e.html" class="article-date">
+	  <time datetime="2020-04-10T12:35:45.000Z" itemprop="datePublished">2020-04-10</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/bigdata/">bigdata</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/lucene/" rel="tag">lucene</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/post/414a752e.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.9k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 7(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="lucene介绍"><a href="#lucene介绍" class="headerlink" title="lucene介绍"></a>lucene介绍</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>生活中的数据总体分为两种类型</p>
+<ul>
+<li>结构化数据：指具有固定格式或有限长度的数据（数据库表中的数据）</li>
+<li>非结构化数据：指不定长或无固定格式的数据 （如邮件，word文档等磁盘上的文件）</li>
+</ul>
+<p>结构化数据的查询方法：</p>
+<ul>
+<li>sql语句</li>
+</ul>
+<p>非结构化数据的查询方法：</p>
+<ul>
+<li>顺序扫描法(Serial Scanning)：顺序扫描所有文件，速度慢</li>
+<li>全文检索(Full-text Search)：非结构化数据中的一部分信息提取出来，重新组织为索引，这种先建立索引，再对索引进行搜索的过程就叫全文检索</li>
+</ul>
+<blockquote>
+<p>Lucene是apache下的一个开源的全文检索引擎工具包,但它不是一个完整的全文检索引擎，而是一个全文检索引擎的架构，提供了完整的查询引擎和索引引擎;<br>Lucene 的目的是为软件开发人员提供一个简单易用的工具包，以方便的在目标系统中实现全文检索的功能，或者是以此为基础建立起完整的全文检索引擎。Lucene 是一套用于全文检索和搜寻的开源程式库，由 Apache 软件基金会支持和提供。</p>
+</blockquote>
+<h2 id="全文检索的一般过程"><a href="#全文检索的一般过程" class="headerlink" title="全文检索的一般过程"></a>全文检索的一般过程</h2><p><img src="../assets/image/lucene.png" alt="image"><br>lucene包含两部分：建立索引和搜索服务。建立索引是将源（本质是字符串）写入索引或者将源从索引中删除；进行搜索是向用户提供全文搜索服务，用户可以通过关键词定位源。</p>
+<ol>
+<li><p>建立索引的流程<br>使用analyzer处理源字符串，包括：分词，即分成一个个单词；去除stopword（可选）。<br>将源中的有效信息以不同Field的形式加入Document中，并把Document加入索引，从而在索引中记录有效的Field。<br>将索引写入存储器（内存或磁盘）。</p>
+</li>
+<li><p>检索的流程</p>
+<p>用户提供搜索关键词，经过analyzer处理。<br>对处理后的关键词搜索索引找出对应的Document。<br>用户根据需要从找到的Document中提取需要的Field。<br><img src="../assets/image/lucene2.png" alt="image"></p>
+</li>
+</ol>
+<p>1、绿色表示索引过程，对要搜索的原始内容进行索引构建一个索引库，索引过程包括：　　　　<br>        确定原始内容即要搜索的内容→采集文档→创建文档→分析文档→索引文档　　<br>2、红色表示搜索过程，从索引库中搜索内容，搜索过程包括：　　　　<br>     用户通过搜索界面→创建查询→执行搜索，从索引库搜索→渲染搜索结果</p>
+<p><strong>索引文件结构</strong><br>   <img src="../assets/image/lucene3.png" alt="image"></p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li><p><strong>Analyzer</strong></p>
+<p>  Analyzer的作用是分词，并去除字符串中的无效词语。<br>  分词的目的是把字符串按某种语义规则划分为若干个词。英文中比较容易实现分词，因为英文本身就是以单词为单位，已经用空格分开；而中文则必须以某种方法将连成一片的句子划分成一个个词。 无效词语，如英文中的“of”、“the”和中文中的“的”、“地”等，这些词语在文章中大量出现。但是本身不包含关键信息，去掉后有利于缩小索引文件、提高命中率和执行效率。</p>
+</li>
+<li><p><strong>Document</strong></p>
+<p> 用户提供的源可以是文本文件、字符串或者数据库表中的一条记录等。一个源字符串经过索引之后，以一个Document的形式存储在索引文件中。搜索服务的结果也是以Document列表的形式返回。</p>
+</li>
+</ul>
+<ul>
+<li><p><strong>Field</strong></p>
+<p>  一个Document可以包含多个信息域，如一篇文章可以包含“标题”、“正文”、“最后修改时间”等信息域，这些信息域以Field的形式保存在Document中。<br>  Field有两个属性：存储和索引。存储属性可以控制是否对这个Field进行存储；索引属性可以控制是否对该Field进行索引。这似乎多此一举，但事实上对这两个属性的正确组合很重要。<br> 什么样的内容需要被存储：查询时需要被显示的内容都需要被存储；<br> 什么样的内容需要被分词：要被搜索的列<br> 什么样的内容需要分词：要被搜索的列<br> DoubleField、FloatField、IntField、LongField、StringField、TextField这些子类一定会被创建索引，但是不会被分词，而且不一定会被存储到文档列表。要通过构造函数中的参数Store来指定：如果Store.YES代表存储，Store.NO代表不存储<br> TextField即创建索引，又会被分词。StringField会创建索引，但是不会被分词</p>
+</li>
+<li><p><strong>segment</strong><br> 建立索引时，并不是每个document都马上添加到同一个索引文件，它们首先被写入到不同的小文件，然后再合并成一个大索引文件，每个小文件都是一个segment。</p>
+</li>
+<li><p><strong>Term</strong></p>
+<p> Term表示文档的一个词，是搜索的最小单位。term由两部分组成：所表示的词语和这个词语所出现的field。</p>
+</li>
+</ul>
+<h3 id="创建索引流程"><a href="#创建索引流程" class="headerlink" title="创建索引流程"></a>创建索引流程</h3><p>   <img src="../assets/image/lucene4.png" alt="image"><br>案例：将文件夹testFile中的文件放入lucene索引库index中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">   <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIndexCreate</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        ArrayList&lt;Document&gt; docList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//指定文件所在目录</span></span><br><span class="line">        File dir = <span class="keyword">new</span> File(<span class="string">"E:\\git\\lucene_demo\\testFile"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (File file : dir.listFiles()) &#123;</span><br><span class="line">            <span class="comment">//文件名称</span></span><br><span class="line">            String fileName = file.getName();</span><br><span class="line">            <span class="comment">//文件内容</span></span><br><span class="line">            String fileContext = FileUtils.readFileToString(file);</span><br><span class="line">            <span class="comment">//文件大小</span></span><br><span class="line">            Long fileSize = FileUtils.sizeOf(file);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//创建文档对象</span></span><br><span class="line">            Document document = <span class="keyword">new</span> Document();</span><br><span class="line">            <span class="comment">//创建域</span></span><br><span class="line">            TextField nameField = <span class="keyword">new</span> TextField(<span class="string">"fileName"</span>, fileName, Field.Store.YES);</span><br><span class="line">            TextField contextField = <span class="keyword">new</span> TextField(<span class="string">"fileContext"</span>, fileContext, Field.Store.YES);</span><br><span class="line">            LongField sizeField = <span class="keyword">new</span> LongField(<span class="string">"fileSize"</span>, fileSize, Field.Store.YES);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将创建的所有域都存入文档中</span></span><br><span class="line">            document.add(nameField);</span><br><span class="line">            document.add(contextField);</span><br><span class="line">            document.add(sizeField);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//将文档存入文档集合中</span></span><br><span class="line">            docList.add(document);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建分词器，StandardAnalyzer为标准分词器，中文单字分词</span></span><br><span class="line">        Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//指定索引库的位置</span></span><br><span class="line">        Directory directory = FSDirectory.open(<span class="keyword">new</span> File(<span class="string">"E:\\git\\lucene_demo\\index"</span>));</span><br><span class="line">        <span class="comment">//创建写对象的初始化配置</span></span><br><span class="line">        IndexWriterConfig writerConfig = <span class="keyword">new</span> IndexWriterConfig(Version.LATEST, analyzer);</span><br><span class="line">        <span class="comment">//创建写对象</span></span><br><span class="line">        IndexWriter indexWriter = <span class="keyword">new</span> IndexWriter(directory, writerConfig);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//将文档加入写对象中</span></span><br><span class="line">        <span class="keyword">for</span> (Document document : docList) &#123;</span><br><span class="line">            indexWriter.addDocument(document);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//提交写入索引库</span></span><br><span class="line">        indexWriter.commit();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭流</span></span><br><span class="line">        indexWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
+<h3 id="查询索引"><a href="#查询索引" class="headerlink" title="查询索引"></a>查询索引</h3><p>建立索引和进行检索时都要用到分词器。为了保证能正确的检索到结果，在建立索引与进行检索时使用的分词器应是同一个。<br>案例：使用Term词在索引库中查询对应的文档（注意指定域）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIndexTermSearch</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//创建分词器（必须和创建索引时的分词器一致）</span></span><br><span class="line">    Analyzer analyzer = <span class="keyword">new</span> StandardAnalyzer();</span><br><span class="line"></span><br><span class="line">    Term term = <span class="keyword">new</span> Term(<span class="string">"fileName"</span>, <span class="string">"demo.txt"</span>);</span><br><span class="line">    Query query = <span class="keyword">new</span> TermQuery(term);</span><br><span class="line">    queryIndexStore(query);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">queryIndexStore</span><span class="params">(Query query)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//指定文档库的位置</span></span><br><span class="line">    FSDirectory directory = FSDirectory.open(<span class="keyword">new</span> File(<span class="string">"E:\\git\\lucene_demo\\index"</span>));</span><br><span class="line">    <span class="comment">//创建读索引库的reader对象</span></span><br><span class="line">    IndexReader indexReader = IndexReader.open(directory);</span><br><span class="line">    <span class="comment">//创建索引的搜索对象</span></span><br><span class="line">    IndexSearcher indexSearcher = <span class="keyword">new</span> IndexSearcher(indexReader);</span><br><span class="line">    <span class="comment">//执行搜索，参数为u查询语句，指定显示多少条记录</span></span><br><span class="line">    TopDocs topDocs = indexSearcher.search(query, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"count="</span>+topDocs.totalHits);</span><br><span class="line">    <span class="comment">//获取结果集</span></span><br><span class="line">    ScoreDoc[] scoreDocs = topDocs.scoreDocs;</span><br><span class="line">    <span class="keyword">for</span> (ScoreDoc scoreDoc : scoreDocs) &#123;</span><br><span class="line">        <span class="comment">//获取docId</span></span><br><span class="line">        <span class="keyword">int</span> docId = scoreDoc.doc;</span><br><span class="line">        <span class="comment">//通过唯一docID获取到文档</span></span><br><span class="line">        Document document = indexReader.document(docId);</span><br><span class="line">        System.out.println(<span class="string">"fileName="</span>+document.get(<span class="string">"fileName"</span>));</span><br><span class="line">        System.out.println(<span class="string">"fileSize="</span>+document.get(<span class="string">"fileSize"</span>));</span><br><span class="line">        System.out.println(<span class="string">"=========="</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整测试代码地址：<br><a href="https://github.com/renrr/lucene_demo" target="_blank" rel="noopener">https://github.com/renrr/lucene_demo</a></p>
+<h2 id="luke使用"><a href="#luke使用" class="headerlink" title="luke使用"></a>luke使用</h2><blockquote>
+<p>luke是用于查看lucene中索引文件的工具，注意luke与lucene的版本对应关系（GitHub中luke项目声明了支持的lucene版本）</p>
+</blockquote>
+<p>目前只支持windows<br>启动方式：<br>执行部署包中start.bat文件，或者命令行执行java -jar luke-xx.jar<br>打开索引库文件位置：<br>   <img src="../assets/image/luke.png" alt="image"><br><img src="../assets/image/luke1.png" alt="image"></p>
+<h2 id="查看文档内容"><a href="#查看文档内容" class="headerlink" title="查看文档内容"></a>查看文档内容</h2><p><img src="../assets/image/luke2.png" alt="image"></p>
+<p>通过搜索关键字查找文档<br>域对象:关键字搜索<br><img src="../assets/image/luke3.png" alt="image"></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://renrr.github.io/post/414a752e.html" title="Lucene 介绍" target="_blank" rel="external">https://renrr.github.io/post/414a752e.html</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/renrr" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/logo.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/renrr" target="_blank"><span class="text-dark">renrr</span><small class="ml-1x">Java Developer</small></a></h3>
+        <div>a coder life</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/post/8c005afd.html" title="Apache Thrift"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/renrr" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/null" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        &copy; 2020 renrr
+        
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+    <script defer type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-142669925-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+
+
+    <script defer>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?677cb870fafae889eec9ce2e03def624";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+</body>
+</html>

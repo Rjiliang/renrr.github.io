@@ -17,18 +17,23 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>归档: 2020/4 | renrr Blog</title>
-  <meta name="description" content="卓越始于坚持">
-<meta property="og:type" content="website">
-<meta property="og:title" content="renrr&#39;s Blog">
-<meta property="og:url" content="https://renrr.github.io/archives/2020/04/index.html">
+  <title>Apache Thrift | renrr Blog</title>
+  <meta name="description" content="Apache Thrift Thrift是一个典型的C&#x2F;S结构，客户端和服务器端可以使用不同的语言开发。客户端和服务端的关联语言就是IDL(Interface Description Language)  Thrift数据类型  byte 有符号字节 i16 16位有符号整数 i32 32位有符号整数 i64 64位有符号整数 double 64位浮点数 string 字符串  Thrift工作原">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Apache Thrift">
+<meta property="og:url" content="https://renrr.github.io/post/8c005afd.html">
 <meta property="og:site_name" content="renrr&#39;s Blog">
-<meta property="og:description" content="卓越始于坚持">
+<meta property="og:description" content="Apache Thrift Thrift是一个典型的C&#x2F;S结构，客户端和服务器端可以使用不同的语言开发。客户端和服务端的关联语言就是IDL(Interface Description Language)  Thrift数据类型  byte 有符号字节 i16 16位有符号整数 i32 32位有符号整数 i64 64位有符号整数 double 64位浮点数 string 字符串  Thrift工作原">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renrr.github.io/assets/image/thrift%E6%9E%B6%E6%9E%84.png">
+<meta property="article:published_time" content="2020-04-11T13:35:45.000Z">
+<meta property="article:modified_time" content="2020-04-12T03:03:31.853Z">
 <meta property="article:author" content="renrr">
+<meta property="article:tag" content="IDL">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renrr.github.io/assets/image/thrift%E6%9E%B6%E6%9E%84.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://renrr.github.io/archives/2020/04/index.html">
+  <link rel="canonical" href="https://renrr.github.io/post/8c005afd.html">
   
   
     <link rel="icon" href="/images/logo.jpeg" type="image/x-icon">
@@ -223,59 +228,209 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Apache-Thrift"><span class="toc-number">1.</span> <span class="toc-text">Apache Thrift</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
-  	<article class="content article article-archives article-type-list" itemscope="">
-	    <header class="article-header">
-	      <h1 itemprop="title">归档: 2020/4</h1>
-	      <p class="text-muted">共 2 篇文章</p>
-	    </header>
-	    <div class="article-body">
-	      
-  
-  
+  <div class="content">
+  <article id="post-ApacheThrift" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-    
+    <div class="article-header">
       
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Apache Thrift
+    </h1>
+  
+
       
-      <section class="panel panel-default b-no">
-        <div class="panel-heading" role="tab">
-          <h3 class="panel-title">
-            <a data-toggle="collapse" href="#collapse2020" aria-expanded="true">
-              <i class="icon icon-calendar-plus text-active"></i><i class="icon icon-calendar-minus text"></i>
-              2020
-            </a>
-            <!-- <a href="/archives/2020" class="archive-year">2020</a> -->
-          </h3>
-        </div>
-        <div id="collapse2020" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading2020">
-        <div class="panel-body">
-          <div class="collection">
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/post/8c005afd.html" class="article-date">
+	  <time datetime="2020-04-11T13:35:45.000Z" itemprop="datePublished">2020-04-11</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/RPC/">RPC</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/IDL/" rel="tag">IDL</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/post/8c005afd.html#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 658(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="Apache-Thrift"><a href="#Apache-Thrift" class="headerlink" title="Apache Thrift"></a>Apache Thrift</h2><blockquote>
+<p>Thrift是一个典型的C/S结构，客户端和服务器端可以使用不同的语言开发。<br>客户端和服务端的关联语言就是IDL(Interface Description Language)</p>
+</blockquote>
+<p><strong>Thrift数据类型</strong></p>
+<ul>
+<li>byte 有符号字节</li>
+<li>i16 16位有符号整数</li>
+<li>i32 32位有符号整数</li>
+<li>i64 64位有符号整数</li>
+<li>double 64位浮点数</li>
+<li>string 字符串</li>
+</ul>
+<p><strong>Thrift工作原理：</strong></p>
+<blockquote>
+<p>实现多语言通信</p>
+</blockquote>
+<ul>
+<li>数据传输使用socket(多语言均支持)，数据在以特定的格式发送（如String）,接收放接收后在进行解析。</li>
+<li>定义thrift文件，由thrift文件（IDL）生成双方语言的接口、model,在生成的model以及的接口中会有解码编码的代码</li>
+</ul>
+<p><strong>Thrift的 IDL文件</strong></p>
+<ul>
+<li>struct:目的就是将一些数据聚合在一起，方便传输管理（理解为类）</li>
+<li>enum:枚举的定义和java类似</li>
+<li>exception:thrift支持自定义异常，规则与struct类似</li>
+<li>service:服务相当于java代码中的interface,创建的service在经过代码生成后，就会生成客户端和服务器端的框架代码。</li>
+<li>typedef:类型定义，比如typedef i32 int; 将i32的数据类型定义为int</li>
+<li>const:使用const关键字作常量定义</li>
+<li>namespace:命名空间相当于java中的package,格式namespace 语言 路径，比如 namespace java com.cherry.test</li>
+<li>include:文件包含，相当于java的import</li>
+<li>required,optional：必须和可选字段<br>如何注释：# //开头，/**/包含的也是注释<br>执行命令：thrift –gen java src/main/thrift/data.thrift 生成对应java语言的文件</li>
+</ul>
+<p><strong>Thrift架构：</strong><br><img src="../assets/image/thrift%E6%9E%B6%E6%9E%84.png" alt="image"></p>
+<p><strong>Thrift传输协议：</strong></p>
+<ul>
+<li>TBinaryProtocol – 二进制格式</li>
+<li>TCompactProtocol – 压缩格式</li>
+<li>TJSONProtocol – JSON格式</li>
+<li>TSimpleJSONProtocol – 提供JSON只写协议，生成的文件很容易通过脚本语言解析</li>
+<li>TDebugProtocol – 使用易懂的可读的文本格式，以便debug</li>
+</ul>
+<p><strong>Thrift数据传输方式：</strong></p>
+<ul>
+<li>TSocket –阻塞式Socket</li>
+<li>TFramedTransport – 以frame为单位进行传输，非阻塞式服务中使用。</li>
+<li>TFileTransport – 以文件形式进行传输。</li>
+<li>TMemoryTransport – 将内存用于I/O. java实现时内部使用了ByteArrayOutputStream</li>
+<li>TZlibTransport – 使用zlib压缩，与其他传输方式联合使用。当前无java实现</li>
+</ul>
+<p><strong>Thrift支持的服务模型：</strong></p>
+<ul>
+<li>TSimpleServer –简单的单线程服务模型，常用于测试</li>
+<li>TThreadPoolServer – 多线程服务模型，使用标准的阻塞式IO</li>
+<li>TNonblockingServer – 多线程服务模型，使用非阻塞式IO(需要使用TFramedTransport数据传输方式)</li>
+<li>THsHaServer – THsHa引入线程池去处理，其模型把读写任务放到线程池去处理；Half-sync/Half-async的处理模式，Half-async是在处理IO事件上（accept/read/write io）,Half-sync用于handler对rpc的同步调用</li>
+</ul>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
     
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://renrr.github.io/post/8c005afd.html" title="Apache Thrift" target="_blank" rel="external">https://renrr.github.io/post/8c005afd.html</a>
+    </li>
     
-<a href="/post/8c005afd.html" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2020-04-11T13:35:45.000Z" itemprop="datePublished">2020-04-11</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> Apache Thrift
-</a>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/renrr" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/logo.jpeg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/renrr" target="_blank"><span class="text-dark">renrr</span><small class="ml-1x">Java Developer</small></a></h3>
+        <div>a coder life</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+  </section>
 
 
   
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
     
     
+    <li class="next">
+      <a href="/post/414a752e.html" title="Lucene 介绍"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
     
-<a href="/post/414a752e.html" class="collection-item" target="_blank" itemprop="url">
-  <time datetime="2020-04-10T12:35:45.000Z" itemprop="datePublished">2020-04-10</time>
-  <span>&nbsp;&nbsp;&nbsp;</span> Lucene 介绍
-</a>
-
-
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
   
   
-    </div></div></div></section>
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone,wechat"></div>
+    
+  </div>
+  </div>
+</nav>
   
 
-	    </div>
-  	</article>
-  	 	
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -333,6 +488,14 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
 
 
   <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
